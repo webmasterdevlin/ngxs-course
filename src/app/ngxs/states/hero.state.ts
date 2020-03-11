@@ -62,8 +62,7 @@ export class HeroState {
     patchState({ isLoading: true });
     return this.heroService.getHeroes().pipe(
       tap(response => {
-        setState({
-          ...getState(),
+        patchState({
           heroes: response,
           isLoading: false
         });
@@ -71,7 +70,8 @@ export class HeroState {
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
-          isLoading: false
+          isLoading: false,
+          error: err.statusText
         });
         return throwError(err.message);
       })
@@ -93,7 +93,8 @@ export class HeroState {
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
-          heroes: previousState.heroes
+          heroes: previousState.heroes,
+          error: err.statusText
         });
         return throwError(err.message);
       })
@@ -116,7 +117,8 @@ export class HeroState {
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
-          isLoading: false
+          isLoading: false,
+          error: err.statusText
         });
         return throwError(err.message);
       })
@@ -138,7 +140,8 @@ export class HeroState {
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
-          heroes: previousState.heroes
+          heroes: previousState.heroes,
+          error: err.statusText
         });
         return throwError(err.message);
       })
@@ -160,7 +163,8 @@ export class HeroState {
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
-          isLoading: false
+          isLoading: false,
+          error: err.statusText
         });
         return throwError(err.message);
       })
