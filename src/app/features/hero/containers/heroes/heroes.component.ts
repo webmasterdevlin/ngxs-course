@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { untilDestroyed } from "ngx-take-until-destroy";
 import { Hero } from "../../hero.model";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -45,27 +44,21 @@ export class HeroesComponent implements OnInit, OnDestroy {
 
   fetchHeroes() {
     this.isLoading = true;
-    this.store
-      .dispatch(new GetHeroes())
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        () => {},
-        e => {
-          this.isLoading = false;
-          alert(e.statusText);
-        },
-        () => {
-          this.isLoading = false;
-          this.itemForm.reset();
-        }
-      );
+    this.store.dispatch(new GetHeroes()).subscribe(
+      () => {},
+      e => {
+        this.isLoading = false;
+        alert(e.statusText);
+      },
+      () => {
+        this.isLoading = false;
+        this.itemForm.reset();
+      }
+    );
   }
 
   removeHero(id: string) {
-    this.store
-      .dispatch(new DeleteHero(id))
-      .pipe(untilDestroyed(this))
-      .subscribe();
+    this.store.dispatch(new DeleteHero(id)).subscribe();
   }
 
   onSave() {
@@ -74,20 +67,17 @@ export class HeroesComponent implements OnInit, OnDestroy {
       return;
     }
     this.isLoading = true;
-    this.store
-      .dispatch(new AddHero(this.itemForm.value))
-      .pipe(untilDestroyed(this))
-      .subscribe(
-        () => {},
-        e => {
-          this.isLoading = false;
-          alert(e.statusText);
-        },
-        () => {
-          this.isLoading = false;
-          this.itemForm.reset();
-        }
-      );
+    this.store.dispatch(new AddHero(this.itemForm.value)).subscribe(
+      () => {},
+      e => {
+        this.isLoading = false;
+        alert(e.statusText);
+      },
+      () => {
+        this.isLoading = false;
+        this.itemForm.reset();
+      }
+    );
   }
 
   onUpdate() {
@@ -96,10 +86,7 @@ export class HeroesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.store
-      .dispatch(new UpdateHero(this.editedForm.value))
-      .pipe(untilDestroyed(this))
-      .subscribe();
+    this.store.dispatch(new UpdateHero(this.editedForm.value)).subscribe();
   }
 
   goToHeroDetail(id: string) {

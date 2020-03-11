@@ -25,7 +25,6 @@ export class HeroStateModel {
   defaults: {
     heroes: [],
     hero: null,
-
     error: ""
   }
 })
@@ -61,21 +60,19 @@ export class HeroState {
 
   @Action(DeleteHero)
   removeHero(
-    { getState, setState }: StateContext<HeroStateModel>,
+    { getState, setState, patchState }: StateContext<HeroStateModel>,
     { id }: DeleteHero
   ) {
     // Optimistic update
     const previousState = getState();
     const filteredArray = getState().heroes.filter(h => h.id !== id);
-    setState({
-      ...getState(),
+    patchState({
       heroes: filteredArray
     });
     return this.heroService.deleteHeroById(id).pipe(
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
-        setState({
-          ...getState(),
+        patchState({
           heroes: previousState.heroes
         });
         return throwError(err.message);
@@ -99,7 +96,7 @@ export class HeroState {
 
   @Action(UpdateHero)
   updateHero(
-    { getState, setState }: StateContext<HeroStateModel>,
+    { getState, setState, patchState }: StateContext<HeroStateModel>,
     { payload }: UpdateHero
   ) {
     // Optimistic update
@@ -107,15 +104,11 @@ export class HeroState {
     const heroes = [...getState().heroes];
     const index = heroes.findIndex(item => item.id === payload.id);
     heroes[index] = payload;
-    setState({
-      ...getState(),
-      heroes
-    });
+    patchState({ heroes });
     return this.heroService.putHero(payload).pipe(
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
-        setState({
-          ...getState(),
+        patchState({
           heroes: previousState.heroes
         });
         return throwError(err.message);
@@ -131,7 +124,6 @@ export class HeroState {
     return this.heroService.getHeroById(id).pipe(
       tap(response => {
         patchState({
-          ...getState(),
           hero: response
         });
       })
