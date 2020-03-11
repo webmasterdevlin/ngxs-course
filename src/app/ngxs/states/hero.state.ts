@@ -16,6 +16,7 @@ import { Injectable } from "@angular/core";
 export class HeroStateModel {
   heroes: Hero[];
   hero: Hero;
+  isLoading: boolean;
   error: string;
 }
 
@@ -25,6 +26,7 @@ export class HeroStateModel {
   defaults: {
     heroes: [],
     hero: null,
+    isLoading: false,
     error: ""
   }
 })
@@ -42,18 +44,36 @@ export class HeroState {
   }
 
   @Selector()
+  static getIsLoading(state: HeroStateModel) {
+    return state.isLoading;
+  }
+
+  @Selector()
   static getError(state: HeroStateModel) {
     return state.error;
   }
 
   @Action(GetHeroes)
-  fetchHeroes({ getState, setState }: StateContext<HeroStateModel>) {
+  fetchHeroes({
+    getState,
+    setState,
+    patchState
+  }: StateContext<HeroStateModel>) {
+    patchState({ isLoading: true });
     return this.heroService.getHeroes().pipe(
       tap(response => {
         setState({
           ...getState(),
-          heroes: response
+          heroes: response,
+          isLoading: false
         });
+      }),
+      catchError((err: HttpErrorResponse) => {
+        alert("Something happened. Please try again.");
+        patchState({
+          isLoading: false
+        });
+        return throwError(err.message);
       })
     );
   }
@@ -85,11 +105,20 @@ export class HeroState {
     { getState, patchState }: StateContext<HeroStateModel>,
     { payload }: AddHero
   ) {
+    patchState({ isLoading: true });
     return this.heroService.postHero(payload).pipe(
       tap(response => {
         patchState({
-          heroes: [...getState().heroes, response]
+          heroes: [...getState().heroes, response],
+          isLoading: false
         });
+      }),
+      catchError((err: HttpErrorResponse) => {
+        alert("Something happened. Please try again.");
+        patchState({
+          isLoading: false
+        });
+        return throwError(err.message);
       })
     );
   }
@@ -121,11 +150,19 @@ export class HeroState {
     { getState, setState, patchState }: StateContext<HeroStateModel>,
     { id }: GetHeroById
   ) {
+    patchState({ isLoading: true });
     return this.heroService.getHeroById(id).pipe(
       tap(response => {
         patchState({
           hero: response
         });
+      }),
+      catchError((err: HttpErrorResponse) => {
+        alert("Something happened. Please try again.");
+        patchState({
+          isLoading: false
+        });
+        return throwError(err.message);
       })
     );
   }

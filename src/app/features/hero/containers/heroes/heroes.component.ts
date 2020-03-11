@@ -1,8 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Hero } from "../../hero.model";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { Select, Store } from "@ngxs/store";
+import { Store } from "@ngxs/store";
 import {
   AddHero,
   DeleteHero,
@@ -10,7 +9,6 @@ import {
   UpdateHero
 } from "../../../../ngxs/actions/hero.action";
 import { HeroState } from "../../../../ngxs/states/hero.state";
-import { Observable } from "rxjs";
 
 @Component({
   selector: "app-heroes",
@@ -20,13 +18,10 @@ import { Observable } from "rxjs";
 export class HeroesComponent implements OnInit, OnDestroy {
   itemForm: FormGroup;
   editedForm: FormGroup;
+  heroes: any;
   error = "";
   isLoading = false;
-
   editingTracker = "0";
-
-  @Select(HeroState.getHeroList)
-  heroes: Observable<Hero[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -37,28 +32,18 @@ export class HeroesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.formBuilderInit();
     this.fetchHeroes();
+    this.observableConverters();
   }
 
   // this is needed in untilDestroyed
   ngOnDestroy(): void {}
 
   fetchHeroes() {
-    this.isLoading = true;
-    this.store.dispatch(new GetHeroes()).subscribe(
-      () => {},
-      e => {
-        this.isLoading = false;
-        alert(e.statusText);
-      },
-      () => {
-        this.isLoading = false;
-        this.itemForm.reset();
-      }
-    );
+    this.store.dispatch(new GetHeroes());
   }
 
   removeHero(id: string) {
-    this.store.dispatch(new DeleteHero(id)).subscribe();
+    this.store.dispatch(new DeleteHero(id));
   }
 
   onSave() {
@@ -66,18 +51,8 @@ export class HeroesComponent implements OnInit, OnDestroy {
     if (this.itemForm.invalid) {
       return;
     }
-    this.isLoading = true;
-    this.store.dispatch(new AddHero(this.itemForm.value)).subscribe(
-      () => {},
-      e => {
-        this.isLoading = false;
-        alert(e.statusText);
-      },
-      () => {
-        this.isLoading = false;
-        this.itemForm.reset();
-      }
-    );
+    this.store.dispatch(new AddHero(this.itemForm.value));
+    this.itemForm.reset();
   }
 
   onUpdate() {
@@ -86,7 +61,7 @@ export class HeroesComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.store.dispatch(new UpdateHero(this.editedForm.value)).subscribe();
+    this.store.dispatch(new UpdateHero(this.editedForm.value));
   }
 
   goToHeroDetail(id: string) {
@@ -108,5 +83,14 @@ export class HeroesComponent implements OnInit, OnDestroy {
       house: [""],
       knownAs: [""]
     });
+  }
+
+  private observableConverters(): void {
+    this.store
+      .select(HeroState.getHeroList)
+      .subscribe(data => (this.heroes = data));
+    this.store
+      .select(HeroState.getIsLoading)
+      .subscribe(data => (this.isLoading = data));
   }
 }
