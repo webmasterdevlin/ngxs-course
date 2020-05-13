@@ -13,6 +13,7 @@ import { NgxsModule } from "@ngxs/store";
 import { HeroState } from "./ngxs/states/hero.state";
 import { AppStoreModule } from "./ngxs/app-store.module";
 import { environment } from "../environments/environment";
+import { VillainState } from "./ngxs/states/villain.state";
 
 @NgModule({
   declarations: [AppComponent, NavBarComponent],
@@ -23,12 +24,12 @@ import { environment } from "../environments/environment";
     BrowserAnimationsModule,
     SharedModule,
     AppStoreModule,
-    NgxsModule.forRoot([HeroState], {
-      developmentMode: !environment.production
+    NgxsModule.forRoot([HeroState, VillainState], {
+      developmentMode: !environment.production,
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),
-    NgxsLoggerPluginModule.forRoot()
+    NgxsLoggerPluginModule.forRoot(),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
