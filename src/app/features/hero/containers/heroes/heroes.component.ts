@@ -6,22 +6,23 @@ import {
   AddHero,
   DeleteHero,
   GetHeroes,
-  UpdateHero
+  UpdateHero,
 } from "../../../../ngxs/actions/hero.action";
 import { HeroState } from "../../../../ngxs/states/hero.state";
 
 @Component({
   selector: "app-heroes",
   templateUrl: "./heroes.component.html",
-  styleUrls: ["./heroes.component.css"]
+  styleUrls: ["./heroes.component.css"],
 })
 export class HeroesComponent implements OnInit, OnDestroy {
+  trackerReset = "0";
   itemForm: FormGroup;
   editedForm: FormGroup;
   heroes: any;
   error = "";
   isLoading = false;
-  editingTracker = "0";
+  editingTracker = this.trackerReset;
 
   constructor(
     private fb: FormBuilder,
@@ -62,6 +63,7 @@ export class HeroesComponent implements OnInit, OnDestroy {
     }
 
     this.store.dispatch(new UpdateHero(this.editedForm.value));
+    this.editingTracker = this.trackerReset;
   }
 
   goToHeroDetail(id: string) {
@@ -73,7 +75,7 @@ export class HeroesComponent implements OnInit, OnDestroy {
       firstName: ["", [Validators.required, Validators.minLength(4)]],
       lastName: ["", [Validators.required, Validators.minLength(4)]],
       house: [""],
-      knownAs: [""]
+      knownAs: [""],
     });
 
     this.editedForm = this.fb.group({
@@ -81,16 +83,16 @@ export class HeroesComponent implements OnInit, OnDestroy {
       firstName: ["", [Validators.required, Validators.minLength(4)]],
       lastName: ["", [Validators.required, Validators.minLength(4)]],
       house: [""],
-      knownAs: [""]
+      knownAs: [""],
     });
   }
 
   private observableConverters(): void {
     this.store
       .select(HeroState.getHeroList)
-      .subscribe(data => (this.heroes = data));
+      .subscribe((data) => (this.heroes = data));
     this.store
       .select(HeroState.getIsLoading)
-      .subscribe(data => (this.isLoading = data));
+      .subscribe((data) => (this.isLoading = data));
   }
 }
