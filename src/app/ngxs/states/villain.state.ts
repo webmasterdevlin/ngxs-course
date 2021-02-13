@@ -1,3 +1,7 @@
+import { Injectable } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { catchError, tap } from "rxjs/operators";
+import { throwError } from "rxjs";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { Villain } from "../../features/villain/villain.model";
 import { VillainService } from "../services/villain.service";
@@ -7,10 +11,6 @@ import {
   GetVillains,
   UpdateVillain,
 } from "../actions/villain.action";
-import { HttpErrorResponse } from "@angular/common/http";
-import { catchError, tap } from "rxjs/operators";
-import { throwError } from "rxjs";
-import { Injectable } from "@angular/core";
 
 export class VillainStateModel {
   villains: Villain[];

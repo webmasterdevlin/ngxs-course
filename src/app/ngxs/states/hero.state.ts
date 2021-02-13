@@ -1,16 +1,16 @@
+import { Injectable } from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { catchError, tap } from "rxjs/operators";
+import { throwError } from "rxjs";
+import { HeroService } from "../services/hero.service";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { Hero } from "../../features/hero/hero.model";
-import { HeroService } from "../services/hero.service";
 import {
   AddHero,
   DeleteHero,
   GetHeroes,
   UpdateHero,
 } from "../actions/hero.action";
-import { HttpErrorResponse } from "@angular/common/http";
-import { catchError, tap } from "rxjs/operators";
-import { throwError } from "rxjs";
-import { Injectable } from "@angular/core";
 
 export class HeroStateModel {
   heroes: Hero[];
