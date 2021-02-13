@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
+import { HeroState } from "src/app/ngxs/states/hero.state";
 import {
   GetHeroes,
   DeleteHero,
   AddHero,
   UpdateHero,
 } from "src/app/ngxs/actions/hero.action";
-import { HeroState } from "src/app/ngxs/states/hero.state";
 
 @Component({
   selector: "app-heroes",

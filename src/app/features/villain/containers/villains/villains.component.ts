@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
+import { VillainState } from "src/app/ngxs/states/villain.state";
 import {
   GetVillains,
   DeleteVillain,
   AddVillain,
   UpdateVillain,
 } from "src/app/ngxs/actions/villain.action";
-import { VillainState } from "src/app/ngxs/states/villain.state";
 
 @Component({
   selector: "app-villains",
