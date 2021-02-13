@@ -81,7 +81,7 @@ export class VillainState {
     patchState({
       villains: filteredArray,
     });
-    return this.villainService.deleteVillainById(id).pipe(
+    return this.villainService.deleteVillain(id).pipe(
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({

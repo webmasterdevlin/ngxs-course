@@ -81,7 +81,7 @@ export class HeroState {
     patchState({
       heroes: filteredArray,
     });
-    return this.heroService.deleteHeroById(id).pipe(
+    return this.heroService.deleteHero(id).pipe(
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({

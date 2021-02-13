@@ -14,7 +14,7 @@ export class HeroService {
     return this.http.get<Hero[]>(this.path);
   }
 
-  deleteHeroById(id: string): Observable<void> {
+  deleteHero(id: string): Observable<void> {
     return this.http.delete<void>(`${this.path}/${id}`);
   }
 

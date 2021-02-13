@@ -42,19 +42,19 @@ export class VillainsComponent implements OnInit, OnDestroy {
     this.store.dispatch(new GetVillains());
   }
 
-  removeVillain(id: string) {
+  handleDeleteVillain(id: string) {
     this.store.dispatch(new DeleteVillain(id));
   }
 
-  onSave() {
+  handleAddVillain() {
     this.store.dispatch(new AddVillain(this.itemForm.value));
   }
 
-  onUpdate() {
+  handleUpdateVillain() {
     this.store.dispatch(new UpdateVillain(this.editedForm.value));
   }
 
-  goToVillainDetail(id: string) {
+  handleNavigateVillainDetail(id: string) {
     this.router.navigateByUrl("/villains/villain-detail/" + id);
   }
 

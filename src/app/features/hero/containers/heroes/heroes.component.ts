@@ -42,19 +42,19 @@ export class HeroesComponent implements OnInit, OnDestroy {
     this.store.dispatch(new GetHeroes());
   }
 
-  removeHero(id: string) {
+  handleDeleteHero(id: string) {
     this.store.dispatch(new DeleteHero(id));
   }
 
-  onSave() {
+  handleAddHero() {
     this.store.dispatch(new AddHero(this.itemForm.value));
   }
 
-  onUpdate() {
+  handleUpdateHero() {
     this.store.dispatch(new UpdateHero(this.editedForm.value));
   }
 
-  goToHeroDetail(id: string) {
+  handleNavigateHeroDetail(id: string) {
     this.router.navigateByUrl("/heroes/hero-detail/" + id);
   }
 
