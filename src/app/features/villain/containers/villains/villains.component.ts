@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
@@ -16,7 +16,7 @@ import {
   templateUrl: "./villains.component.html",
   styleUrls: ["./villains.component.css"],
 })
-export class VillainsComponent implements OnInit, OnDestroy {
+export class VillainsComponent implements OnInit {
   itemForm: FormGroup;
   editedForm: FormGroup;
   villains: any;
@@ -35,9 +35,6 @@ export class VillainsComponent implements OnInit, OnDestroy {
     this.fetchVillains();
     this.observableConverters();
   }
-
-  // this is needed in untilDestroyed
-  ngOnDestroy(): void {}
 
   fetchVillains() {
     this.store.dispatch(new GetVillainsAction());
