@@ -4,8 +4,8 @@ export class GetVillains {
   static readonly type = "[Villain] Get";
 }
 
-export class GetVillainById {
-  static readonly type = "[Villain] GetById";
+export class DeleteVillain {
+  static readonly type = "[Villain] Delete";
   constructor(public id: string) {}
 }
 
@@ -18,9 +18,4 @@ export class UpdateVillain {
   static readonly type = "[Villain] Update";
 
   constructor(public payload: Villain) {}
-}
-
-export class DeleteVillain {
-  static readonly type = "[Villain] Delete";
-  constructor(public id: string) {}
 }

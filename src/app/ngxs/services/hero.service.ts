@@ -25,8 +25,4 @@ export class HeroService {
   putHero(updatedHero: Hero): Observable<void> {
     return this.http.put<void>(`${this.path}/${updatedHero.id}`, updatedHero);
   }
-
-  getHeroById(id: string): Observable<Hero> {
-    return this.http.get<Hero>(`${this.path}/${id}`);
-  }
 }

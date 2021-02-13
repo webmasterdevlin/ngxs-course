@@ -28,8 +28,4 @@ export class VillainService {
       updatedVillain
     );
   }
-
-  getVillainById(id: string): Observable<Villain> {
-    return this.http.get<Villain>(`${this.path}/${id}`);
-  }
 }

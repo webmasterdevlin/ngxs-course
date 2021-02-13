@@ -4,9 +4,8 @@ import { HeroService } from "../services/hero.service";
 import {
   AddHero,
   DeleteHero,
-  GetHeroById,
   GetHeroes,
-  UpdateHero
+  UpdateHero,
 } from "../actions/hero.action";
 import { HttpErrorResponse } from "@angular/common/http";
 import { catchError, tap } from "rxjs/operators";
@@ -15,7 +14,6 @@ import { Injectable } from "@angular/core";
 
 export class HeroStateModel {
   heroes: Hero[];
-  hero: Hero;
   isLoading: boolean;
   error: string;
 }
@@ -25,10 +23,9 @@ export class HeroStateModel {
   name: "heroes",
   defaults: {
     heroes: [],
-    hero: null,
     isLoading: false,
-    error: ""
-  }
+    error: "",
+  },
 })
 export class HeroState {
   constructor(private heroService: HeroService) {}
@@ -36,11 +33,6 @@ export class HeroState {
   @Selector()
   static getHeroList(state: HeroStateModel) {
     return state.heroes;
-  }
-
-  @Selector()
-  static getSelectedHero(state: HeroStateModel) {
-    return state.hero;
   }
 
   @Selector()
@@ -57,21 +49,21 @@ export class HeroState {
   fetchHeroes({
     getState,
     setState,
-    patchState
+    patchState,
   }: StateContext<HeroStateModel>) {
     patchState({ isLoading: true });
     return this.heroService.getHeroes().pipe(
-      tap(response => {
+      tap((response) => {
         patchState({
           heroes: response,
-          isLoading: false
+          isLoading: false,
         });
       }),
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
           isLoading: false,
-          error: err.statusText
+          error: err.statusText,
         });
         return throwError(err.message);
       })
@@ -85,16 +77,16 @@ export class HeroState {
   ) {
     // Optimistic update
     const previousState = getState();
-    const filteredArray = getState().heroes.filter(h => h.id !== id);
+    const filteredArray = getState().heroes.filter((h) => h.id !== id);
     patchState({
-      heroes: filteredArray
+      heroes: filteredArray,
     });
     return this.heroService.deleteHeroById(id).pipe(
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
           heroes: previousState.heroes,
-          error: err.statusText
+          error: err.statusText,
         });
         return throwError(err.message);
       })
@@ -108,17 +100,17 @@ export class HeroState {
   ) {
     patchState({ isLoading: true });
     return this.heroService.postHero(payload).pipe(
-      tap(response => {
+      tap((response) => {
         patchState({
           heroes: [...getState().heroes, response],
-          isLoading: false
+          isLoading: false,
         });
       }),
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
           isLoading: false,
-          error: err.statusText
+          error: err.statusText,
         });
         return throwError(err.message);
       })
@@ -133,7 +125,7 @@ export class HeroState {
     // Optimistic update
     const previousState = getState();
     const heroes = [...getState().heroes];
-    const index = heroes.findIndex(item => item.id === payload.id);
+    const index = heroes.findIndex((item) => item.id === payload.id);
     heroes[index] = payload;
     patchState({ heroes });
     return this.heroService.putHero(payload).pipe(
@@ -141,30 +133,7 @@ export class HeroState {
         alert("Something happened. Please try again.");
         patchState({
           heroes: previousState.heroes,
-          error: err.statusText
-        });
-        return throwError(err.message);
-      })
-    );
-  }
-
-  @Action(GetHeroById)
-  fetchHeroById(
-    { getState, setState, patchState }: StateContext<HeroStateModel>,
-    { id }: GetHeroById
-  ) {
-    patchState({ isLoading: true });
-    return this.heroService.getHeroById(id).pipe(
-      tap(response => {
-        patchState({
-          hero: response
-        });
-      }),
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
-        patchState({
-          isLoading: false,
-          error: err.statusText
+          error: err.statusText,
         });
         return throwError(err.message);
       })

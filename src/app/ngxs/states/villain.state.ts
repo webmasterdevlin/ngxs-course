@@ -4,7 +4,6 @@ import { VillainService } from "../services/villain.service";
 import {
   AddVillain,
   DeleteVillain,
-  GetVillainById,
   GetVillains,
   UpdateVillain,
 } from "../actions/villain.action";
@@ -15,7 +14,6 @@ import { Injectable } from "@angular/core";
 
 export class VillainStateModel {
   villains: Villain[];
-  villain: Villain;
   isLoading: boolean;
   error: string;
 }
@@ -25,7 +23,6 @@ export class VillainStateModel {
   name: "villains",
   defaults: {
     villains: [],
-    villain: null,
     isLoading: false,
     error: "",
   },
@@ -36,11 +33,6 @@ export class VillainState {
   @Selector()
   static getVillainList(state: VillainStateModel) {
     return state.villains;
-  }
-
-  @Selector()
-  static getSelectedVillain(state: VillainStateModel) {
-    return state.villain;
   }
 
   @Selector()
@@ -141,29 +133,6 @@ export class VillainState {
         alert("Something happened. Please try again.");
         patchState({
           villains: previousState.villains,
-          error: err.statusText,
-        });
-        return throwError(err.message);
-      })
-    );
-  }
-
-  @Action(GetVillainById)
-  fetchVillainById(
-    { getState, setState, patchState }: StateContext<VillainStateModel>,
-    { id }: GetVillainById
-  ) {
-    patchState({ isLoading: true });
-    return this.villainService.getVillainById(id).pipe(
-      tap((response) => {
-        patchState({
-          villain: response,
-        });
-      }),
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
-        patchState({
-          isLoading: false,
           error: err.statusText,
         });
         return throwError(err.message);
