@@ -16,13 +16,12 @@ import { VillainState } from "../../../../ngxs/states/villain.state";
   styleUrls: ["./villains.component.css"],
 })
 export class VillainsComponent implements OnInit, OnDestroy {
-  trackerReset = "0";
   itemForm: FormGroup;
   editedForm: FormGroup;
   villains: any;
   error = "";
   isLoading = false;
-  editingTracker = this.trackerReset;
+  editingTracker = "0";
 
   constructor(
     private fb: FormBuilder,
@@ -48,22 +47,11 @@ export class VillainsComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-    // stop here if form is invalid
-    if (this.itemForm.invalid) {
-      return;
-    }
     this.store.dispatch(new AddVillain(this.itemForm.value));
-    this.itemForm.reset();
   }
 
   onUpdate() {
-    // stop here if form is invalid
-    if (this.editedForm.invalid) {
-      return;
-    }
-
     this.store.dispatch(new UpdateVillain(this.editedForm.value));
-    this.editingTracker = this.trackerReset;
   }
 
   goToVillainDetail(id: string) {

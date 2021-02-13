@@ -16,13 +16,12 @@ import { HeroState } from "../../../../ngxs/states/hero.state";
   styleUrls: ["./heroes.component.css"],
 })
 export class HeroesComponent implements OnInit, OnDestroy {
-  trackerReset = "0";
   itemForm: FormGroup;
   editedForm: FormGroup;
   heroes: any;
   error = "";
   isLoading = false;
-  editingTracker = this.trackerReset;
+  editingTracker = "0";
 
   constructor(
     private fb: FormBuilder,
@@ -48,22 +47,11 @@ export class HeroesComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
-    // stop here if form is invalid
-    if (this.itemForm.invalid) {
-      return;
-    }
     this.store.dispatch(new AddHero(this.itemForm.value));
-    this.itemForm.reset();
   }
 
   onUpdate() {
-    // stop here if form is invalid
-    if (this.editedForm.invalid) {
-      return;
-    }
-
     this.store.dispatch(new UpdateHero(this.editedForm.value));
-    this.editingTracker = this.trackerReset;
   }
 
   goToHeroDetail(id: string) {
