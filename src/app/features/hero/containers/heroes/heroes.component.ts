@@ -4,10 +4,10 @@ import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
 import { HeroState } from "src/app/ngxs/states/hero.state";
 import {
-  GetHeroes,
-  DeleteHero,
-  AddHero,
-  UpdateHero,
+  GetHeroesAction,
+  DeleteHeroAction,
+  AddHeroAction,
+  UpdateHeroAction,
 } from "src/app/ngxs/actions/hero.action";
 
 @Component({
@@ -39,19 +39,19 @@ export class HeroesComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   fetchHeroes() {
-    this.store.dispatch(new GetHeroes());
+    this.store.dispatch(new GetHeroesAction());
   }
 
   handleDeleteHero(id: string) {
-    this.store.dispatch(new DeleteHero(id));
+    this.store.dispatch(new DeleteHeroAction(id));
   }
 
   handleAddHero() {
-    this.store.dispatch(new AddHero(this.itemForm.value));
+    this.store.dispatch(new AddHeroAction(this.itemForm.value));
   }
 
   handleUpdateHero() {
-    this.store.dispatch(new UpdateHero(this.editedForm.value));
+    this.store.dispatch(new UpdateHeroAction(this.editedForm.value));
   }
 
   handleNavigateHeroDetail(id: string) {

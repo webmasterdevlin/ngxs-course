@@ -6,10 +6,11 @@ import { HeroService } from "../services/hero.service";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { Hero } from "../../features/hero/hero.model";
 import {
-  AddHero,
-  DeleteHero,
-  GetHeroes,
-  UpdateHero,
+  GetHeroesAction,
+  DeleteHeroAction,
+  AddHeroAction,
+  UpdateHeroAction,
+  SoftDeleteHeroAction,
 } from "../actions/hero.action";
 
 export class HeroStateModel {
@@ -45,7 +46,7 @@ export class HeroState {
     return state.error;
   }
 
-  @Action(GetHeroes)
+  @Action(GetHeroesAction)
   fetchHeroes({
     getState,
     setState,
@@ -70,10 +71,10 @@ export class HeroState {
     );
   }
 
-  @Action(DeleteHero)
-  removeHero(
+  @Action(DeleteHeroAction)
+  deleteHero(
     { getState, setState, patchState }: StateContext<HeroStateModel>,
-    { id }: DeleteHero
+    { id }: DeleteHeroAction
   ) {
     // Optimistic update
     const previousState = getState();
@@ -93,10 +94,10 @@ export class HeroState {
     );
   }
 
-  @Action(AddHero)
+  @Action(AddHeroAction)
   addHero(
     { getState, patchState }: StateContext<HeroStateModel>,
-    { payload }: AddHero
+    { payload }: AddHeroAction
   ) {
     patchState({ isLoading: true });
     return this.heroService.postHero(payload).pipe(
@@ -117,10 +118,10 @@ export class HeroState {
     );
   }
 
-  @Action(UpdateHero)
+  @Action(UpdateHeroAction)
   updateHero(
     { getState, setState, patchState }: StateContext<HeroStateModel>,
-    { payload }: UpdateHero
+    { payload }: UpdateHeroAction
   ) {
     // Optimistic update
     const previousState = getState();
@@ -129,6 +130,29 @@ export class HeroState {
     heroes[index] = payload;
     patchState({ heroes });
     return this.heroService.putHero(payload).pipe(
+      catchError((err: HttpErrorResponse) => {
+        alert("Something happened. Please try again.");
+        patchState({
+          heroes: previousState.heroes,
+          error: err.statusText,
+        });
+        return throwError(err.message);
+      })
+    );
+  }
+
+  @Action(SoftDeleteHeroAction)
+  softDeleteHero(
+    { getState, setState, patchState }: StateContext<HeroStateModel>,
+    { id }: DeleteHeroAction
+  ) {
+    // Optimistic update
+    const previousState = getState();
+    const filteredArray = getState().heroes.filter((h) => h.id !== id);
+    patchState({
+      heroes: filteredArray,
+    });
+    return this.heroService.deleteHero(id).pipe(
       catchError((err: HttpErrorResponse) => {
         alert("Something happened. Please try again.");
         patchState({
