@@ -6,7 +6,7 @@
   ></app-form>
 </div>
 <app-character-list></app-character-list>
-<mat-card-content  *ngIf="isLoading">
+<mat-card-content *ngIf="isLoading">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </mat-card-content>
 <section>
@@ -14,7 +14,7 @@
     style="width: 100%; margin: 5rem 0; min-width: 16rem"
     *ngFor="let hero of heroes"
   >
-    <mat-card style="width: auto;">
+    <mat-card style="width: auto">
       <div *ngIf="editingTracker === hero.id">
         <mat-card-content>
           <app-form
@@ -58,7 +58,18 @@
         >
           DETAIL
         </button>
-        <button mat-raised-button color="warn" (click)="handleDeleteHero(hero.id)">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="handleSoftDeleteHero(hero.id)"
+        >
+          SOFT DELETE
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="handleDeleteHero(hero.id)"
+        >
           DELETE
         </button>
       </mat-card-actions>

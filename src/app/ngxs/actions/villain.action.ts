@@ -19,3 +19,8 @@ export class UpdateVillainAction {
 
   constructor(public payload: Villain) {}
 }
+
+export class SoftDeleteVillainAction {
+  static readonly type = "[Villain] SoftDelete";
+  constructor(public id: string) {}
+}

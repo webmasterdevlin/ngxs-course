@@ -142,21 +142,8 @@ export class HeroState {
     { getState, setState, patchState }: StateContext<HeroStateModel>,
     { id }: DeleteHeroAction
   ) {
-    // Optimistic update
-    const previousState = getState();
-    const filteredArray = getState().heroes.filter((h) => h.id !== id);
     patchState({
-      heroes: filteredArray,
+      heroes: getState().heroes.filter((h) => h.id !== id),
     });
-    return this.heroService.deleteHero(id).pipe(
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
-        patchState({
-          heroes: previousState.heroes,
-          error: err.statusText,
-        });
-        return throwError(err.message);
-      })
-    );
   }
 }

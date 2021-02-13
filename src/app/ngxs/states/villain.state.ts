@@ -9,6 +9,7 @@ import {
   AddVillainAction,
   DeleteVillainAction,
   GetVillainsAction,
+  SoftDeleteVillainAction,
   UpdateVillainAction,
 } from "../actions/villain.action";
 
@@ -138,5 +139,15 @@ export class VillainState {
         return throwError(err.message);
       })
     );
+  }
+
+  @Action(SoftDeleteVillainAction)
+  softDeleteHero(
+    { getState, setState, patchState }: StateContext<VillainStateModel>,
+    { id }: SoftDeleteVillainAction
+  ) {
+    patchState({
+      villains: getState().villains.filter((v) => v.id !== id),
+    });
   }
 }

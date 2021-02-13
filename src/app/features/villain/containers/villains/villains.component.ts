@@ -8,6 +8,7 @@ import {
   DeleteVillainAction,
   AddVillainAction,
   UpdateVillainAction,
+  SoftDeleteVillainAction,
 } from "src/app/ngxs/actions/villain.action";
 
 @Component({
@@ -52,6 +53,10 @@ export class VillainsComponent implements OnInit, OnDestroy {
 
   handleUpdateVillain() {
     this.store.dispatch(new UpdateVillainAction(this.editedForm.value));
+  }
+
+  handleSoftDeleteVillain(id: string) {
+    this.store.dispatch(new SoftDeleteVillainAction(id));
   }
 
   handleNavigateVillainDetail(id: string) {

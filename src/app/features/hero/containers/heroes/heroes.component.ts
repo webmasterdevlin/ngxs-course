@@ -8,6 +8,7 @@ import {
   DeleteHeroAction,
   AddHeroAction,
   UpdateHeroAction,
+  SoftDeleteHeroAction,
 } from "src/app/ngxs/actions/hero.action";
 
 @Component({
@@ -52,6 +53,10 @@ export class HeroesComponent implements OnInit, OnDestroy {
 
   handleUpdateHero() {
     this.store.dispatch(new UpdateHeroAction(this.editedForm.value));
+  }
+
+  handleSoftDeleteHero(id: string) {
+    this.store.dispatch(new SoftDeleteHeroAction(id));
   }
 
   handleNavigateHeroDetail(id: string) {

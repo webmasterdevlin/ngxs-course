@@ -6,7 +6,7 @@
   ></app-form>
 </div>
 <app-character-list></app-character-list>
-<mat-card-content  *ngIf="isLoading">
+<mat-card-content *ngIf="isLoading">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </mat-card-content>
 <section>
@@ -14,7 +14,7 @@
     style="width: 100%; margin: 5rem 0; min-width: 16rem"
     *ngFor="let villain of villains"
   >
-    <mat-card style="width: auto;">
+    <mat-card style="width: auto">
       <div *ngIf="editingTracker === villain.id">
         <mat-card-content>
           <app-form
@@ -58,7 +58,18 @@
         >
           DETAIL
         </button>
-        <button mat-raised-button color="warn" (click)="handleDeleteVillain(villain.id)">
+        <button
+          mat-raised-button
+          color="accent"
+          (click)="handleSoftDeleteVillain(villain.id)"
+        >
+          SOFT DELETE
+        </button>
+        <button
+          mat-raised-button
+          color="warn"
+          (click)="handleDeleteVillain(villain.id)"
+        >
           DELETE
         </button>
       </mat-card-actions>
