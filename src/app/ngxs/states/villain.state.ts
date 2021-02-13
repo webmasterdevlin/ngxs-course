@@ -6,10 +6,10 @@ import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { Villain } from "../../features/villain/villain.model";
 import { VillainService } from "../services/villain.service";
 import {
-  AddVillain,
-  DeleteVillain,
-  GetVillains,
-  UpdateVillain,
+  AddVillainAction,
+  DeleteVillainAction,
+  GetVillainsAction,
+  UpdateVillainAction,
 } from "../actions/villain.action";
 
 export class VillainStateModel {
@@ -45,8 +45,8 @@ export class VillainState {
     return state.error;
   }
 
-  @Action(GetVillains)
-  fetchVillains({
+  @Action(GetVillainsAction)
+  getVillains({
     getState,
     setState,
     patchState,
@@ -70,10 +70,10 @@ export class VillainState {
     );
   }
 
-  @Action(DeleteVillain)
-  removeVillain(
+  @Action(DeleteVillainAction)
+  deleteVillain(
     { getState, setState, patchState }: StateContext<VillainStateModel>,
-    { id }: DeleteVillain
+    { id }: DeleteVillainAction
   ) {
     // Optimistic update
     const previousState = getState();
@@ -93,10 +93,10 @@ export class VillainState {
     );
   }
 
-  @Action(AddVillain)
+  @Action(AddVillainAction)
   addVillain(
     { getState, patchState }: StateContext<VillainStateModel>,
-    { payload }: AddVillain
+    { payload }: AddVillainAction
   ) {
     patchState({ isLoading: true });
     return this.villainService.postVillain(payload).pipe(
@@ -117,10 +117,10 @@ export class VillainState {
     );
   }
 
-  @Action(UpdateVillain)
+  @Action(UpdateVillainAction)
   updateVillain(
     { getState, setState, patchState }: StateContext<VillainStateModel>,
-    { payload }: UpdateVillain
+    { payload }: UpdateVillainAction
   ) {
     // Optimistic update
     const previousState = getState();

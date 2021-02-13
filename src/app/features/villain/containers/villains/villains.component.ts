@@ -4,10 +4,10 @@ import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
 import { VillainState } from "src/app/ngxs/states/villain.state";
 import {
-  GetVillains,
-  DeleteVillain,
-  AddVillain,
-  UpdateVillain,
+  GetVillainsAction,
+  DeleteVillainAction,
+  AddVillainAction,
+  UpdateVillainAction,
 } from "src/app/ngxs/actions/villain.action";
 
 @Component({
@@ -39,19 +39,19 @@ export class VillainsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   fetchVillains() {
-    this.store.dispatch(new GetVillains());
+    this.store.dispatch(new GetVillainsAction());
   }
 
   handleDeleteVillain(id: string) {
-    this.store.dispatch(new DeleteVillain(id));
+    this.store.dispatch(new DeleteVillainAction(id));
   }
 
   handleAddVillain() {
-    this.store.dispatch(new AddVillain(this.itemForm.value));
+    this.store.dispatch(new AddVillainAction(this.itemForm.value));
   }
 
   handleUpdateVillain() {
-    this.store.dispatch(new UpdateVillain(this.editedForm.value));
+    this.store.dispatch(new UpdateVillainAction(this.editedForm.value));
   }
 
   handleNavigateVillainDetail(id: string) {

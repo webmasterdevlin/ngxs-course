@@ -47,11 +47,7 @@ export class HeroState {
   }
 
   @Action(GetHeroesAction)
-  fetchHeroes({
-    getState,
-    setState,
-    patchState,
-  }: StateContext<HeroStateModel>) {
+  getHeroes({ getState, setState, patchState }: StateContext<HeroStateModel>) {
     patchState({ isLoading: true });
     return this.heroService.getHeroes().pipe(
       tap((response) => {

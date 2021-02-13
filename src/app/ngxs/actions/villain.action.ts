@@ -1,20 +1,20 @@
 import { Villain } from "../../features/villain/villain.model";
 
-export class GetVillains {
+export class GetVillainsAction {
   static readonly type = "[Villain] Get";
 }
 
-export class DeleteVillain {
+export class DeleteVillainAction {
   static readonly type = "[Villain] Delete";
   constructor(public id: string) {}
 }
 
-export class AddVillain {
+export class AddVillainAction {
   static readonly type = "[Villain] Add";
   constructor(public payload: Villain) {}
 }
 
-export class UpdateVillain {
+export class UpdateVillainAction {
   static readonly type = "[Villain] Update";
 
   constructor(public payload: Villain) {}
