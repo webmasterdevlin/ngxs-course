@@ -3,12 +3,12 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Store } from "@ngxs/store";
 import {
-  AddHero,
-  DeleteHero,
   GetHeroes,
+  DeleteHero,
+  AddHero,
   UpdateHero,
-} from "../../../../ngxs/actions/hero.action";
-import { HeroState } from "../../../../ngxs/states/hero.state";
+} from "src/app/ngxs/actions/hero.action";
+import { HeroState } from "src/app/ngxs/states/hero.state";
 
 @Component({
   selector: "app-heroes",
