@@ -32,13 +32,9 @@ export class VillainsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.formBuilderInit();
     this.fetchVillains();
     this.observableConverters();
-  }
-
-  fetchVillains() {
-    this.store.dispatch(new GetVillainsAction());
+    this.formBuilderInit();
   }
 
   handleDeleteVillain(id: string) {
@@ -61,6 +57,21 @@ export class VillainsComponent implements OnInit {
     this.router.navigateByUrl("/villains/villain-detail/" + id);
   }
 
+  private fetchVillains() {
+    this.store.dispatch(new GetVillainsAction());
+  }
+
+  private observableConverters(): void {
+    this.store
+      .select(VillainState.getVillainList)
+      .pipe(untilDestroyed(this))
+      .subscribe((data) => (this.villains = data));
+    this.store
+      .select(VillainState.getIsLoading)
+      .pipe(untilDestroyed(this))
+      .subscribe((data) => (this.isLoading = data));
+  }
+
   private formBuilderInit(): void {
     this.itemForm = this.fb.group({
       firstName: ["", [Validators.required, Validators.minLength(4)]],
@@ -76,16 +87,5 @@ export class VillainsComponent implements OnInit {
       house: [""],
       knownAs: [""],
     });
-  }
-
-  private observableConverters(): void {
-    this.store
-      .select(VillainState.getVillainList)
-      .pipe(untilDestroyed(this))
-      .subscribe((data) => (this.villains = data));
-    this.store
-      .select(VillainState.getIsLoading)
-      .pipe(untilDestroyed(this))
-      .subscribe((data) => (this.isLoading = data));
   }
 }

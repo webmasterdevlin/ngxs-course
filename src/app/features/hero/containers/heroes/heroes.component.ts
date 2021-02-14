@@ -32,13 +32,9 @@ export class HeroesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.formBuilderInit();
     this.fetchHeroes();
     this.observableConverters();
-  }
-
-  fetchHeroes() {
-    this.store.dispatch(new GetHeroesAction());
+    this.formBuilderInit();
   }
 
   handleDeleteHero(id: string) {
@@ -61,6 +57,21 @@ export class HeroesComponent implements OnInit {
     this.router.navigateByUrl("/heroes/hero-detail/" + id);
   }
 
+  private fetchHeroes() {
+    this.store.dispatch(new GetHeroesAction());
+  }
+
+  private observableConverters(): void {
+    this.store
+      .select(HeroState.getHeroList)
+      .pipe(untilDestroyed(this))
+      .subscribe((data) => (this.heroes = data));
+    this.store
+      .select(HeroState.getIsLoading)
+      .pipe(untilDestroyed(this))
+      .subscribe((data) => (this.isLoading = data));
+  }
+
   private formBuilderInit(): void {
     this.itemForm = this.fb.group({
       firstName: ["", [Validators.required, Validators.minLength(4)]],
@@ -76,16 +87,5 @@ export class HeroesComponent implements OnInit {
       house: [""],
       knownAs: [""],
     });
-  }
-
-  private observableConverters(): void {
-    this.store
-      .select(HeroState.getHeroList)
-      .pipe(untilDestroyed(this))
-      .subscribe((data) => (this.heroes = data));
-    this.store
-      .select(HeroState.getIsLoading)
-      .pipe(untilDestroyed(this))
-      .subscribe((data) => (this.isLoading = data));
   }
 }
