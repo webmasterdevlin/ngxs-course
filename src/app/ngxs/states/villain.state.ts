@@ -1,9 +1,6 @@
 import { Injectable } from "@angular/core";
-import { tap, catchError, finalize } from "rxjs/operators";
-import { of } from "rxjs";
-import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { Villain } from "../../features/villain/villain.model";
-import { VillainService } from "../services/villain.service";
+import { Action, Selector, State, StateContext } from "@ngxs/store";
 import {
   AddVillainAction,
   DeleteVillainAction,
@@ -11,6 +8,9 @@ import {
   SoftDeleteVillainAction,
   UpdateVillainAction,
 } from "../actions/villain.action";
+import { tap, catchError, finalize } from "rxjs/operators";
+import { of } from "rxjs";
+import { VillainService } from "../services/villain.service";
 
 export class VillainStateModel {
   villains: Villain[];

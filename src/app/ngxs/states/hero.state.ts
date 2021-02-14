@@ -1,8 +1,5 @@
 import { Injectable } from "@angular/core";
-import { tap, catchError, finalize } from "rxjs/operators";
-import { of } from "rxjs";
-import { HeroService } from "../services/hero.service";
-import { Action, Selector, State, StateContext } from "@ngxs/store";
+import { State, Selector, Action, StateContext } from "@ngxs/store";
 import { Hero } from "../../features/hero/hero.model";
 import {
   GetHeroesAction,
@@ -11,6 +8,9 @@ import {
   UpdateHeroAction,
   SoftDeleteHeroAction,
 } from "../actions/hero.action";
+import { tap, catchError, finalize } from "rxjs/operators";
+import { of } from "rxjs";
+import { HeroService } from "../services/hero.service";
 
 export class HeroStateModel {
   heroes: Hero[];
