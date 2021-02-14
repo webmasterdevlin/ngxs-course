@@ -22,7 +22,7 @@ export class NavBarComponent implements OnInit {
     this.observableConverters();
   }
 
-  handleLoadHeroes() {
+  handleLoadCharacters() {
     this.store.dispatch(new GetHeroesAction());
     this.store.dispatch(new GetVillainsAction());
   }
