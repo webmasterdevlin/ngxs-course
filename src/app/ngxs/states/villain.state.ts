@@ -69,12 +69,12 @@ export class VillainState {
     );
   }
 
-  // Pessimistic update
   @Action(AddVillainAction)
   addVillain(
     { getState, patchState }: StateContext<VillainStateModel>,
     { payload }: AddVillainAction
   ) {
+    // Pessimistic update
     patchState({ isLoading: true });
     return this.villainService.postVillain(payload).pipe(
       tap((response) =>

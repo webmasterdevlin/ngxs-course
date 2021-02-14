@@ -69,12 +69,12 @@ export class HeroState {
     );
   }
 
-  // Pessimistic update
   @Action(AddHeroAction)
   addHero(
     { getState, patchState }: StateContext<HeroStateModel>,
     { payload }: AddHeroAction
   ) {
+    // Pessimistic update
     patchState({ isLoading: true });
     return this.heroService.postHero(payload).pipe(
       tap((response) =>
