@@ -20,7 +20,6 @@ export class HeroesComponent implements OnInit {
   itemForm: FormGroup;
   editedForm: FormGroup;
   heroes: any;
-  error = "";
   isLoading = false;
   editingTracker = "0";
 

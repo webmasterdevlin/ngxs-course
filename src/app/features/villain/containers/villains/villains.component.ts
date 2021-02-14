@@ -20,7 +20,6 @@ export class VillainsComponent implements OnInit {
   itemForm: FormGroup;
   editedForm: FormGroup;
   villains: any;
-  error = "";
   isLoading = false;
   editingTracker = "0";
 
