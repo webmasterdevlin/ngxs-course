@@ -4,7 +4,9 @@ import { GetHeroesAction } from "src/app/ngxs/actions/hero.action";
 import { GetVillainsAction } from "src/app/ngxs/actions/villain.action";
 import { HeroState } from "src/app/ngxs/states/hero.state";
 import { VillainState } from "src/app/ngxs/states/villain.state";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
   selector: "app-nav-bar",
   templateUrl: "./nav-bar.component.html",
@@ -28,10 +30,12 @@ export class NavBarComponent implements OnInit {
   private observableConverters(): void {
     this.store
       .select(HeroState.getHeroList)
+      .pipe(untilDestroyed(this))
       .subscribe((data) => (this.totalHeroes = data.length));
 
     this.store
       .select(VillainState.getVillainList)
+      .pipe(untilDestroyed(this))
       .subscribe((data) => (this.totalVillains = data.length));
   }
 }

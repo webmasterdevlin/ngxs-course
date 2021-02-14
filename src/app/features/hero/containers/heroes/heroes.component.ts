@@ -10,7 +10,9 @@ import {
   UpdateHeroAction,
   SoftDeleteHeroAction,
 } from "src/app/ngxs/actions/hero.action";
+import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
   selector: "app-heroes",
   templateUrl: "./heroes.component.html",
@@ -79,9 +81,11 @@ export class HeroesComponent implements OnInit {
   private observableConverters(): void {
     this.store
       .select(HeroState.getHeroList)
+      .pipe(untilDestroyed(this))
       .subscribe((data) => (this.heroes = data));
     this.store
       .select(HeroState.getIsLoading)
+      .pipe(untilDestroyed(this))
       .subscribe((data) => (this.isLoading = data));
   }
 }
