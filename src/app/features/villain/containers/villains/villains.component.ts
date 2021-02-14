@@ -11,6 +11,7 @@ import {
   SoftDeleteVillainAction,
 } from "src/app/ngxs/actions/villain.action";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { Villain } from "../../villain.model";
 
 @UntilDestroy()
 @Component({
@@ -21,7 +22,7 @@ import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 export class VillainsComponent implements OnInit {
   itemForm: FormGroup;
   editedForm: FormGroup;
-  villains: any;
+  villains: Villain[];
   isLoading = false;
   editingTracker = "0";
 

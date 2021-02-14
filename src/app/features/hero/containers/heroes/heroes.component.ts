@@ -11,6 +11,7 @@ import {
   SoftDeleteHeroAction,
 } from "src/app/ngxs/actions/hero.action";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
+import { Hero } from "../../hero.model";
 
 @UntilDestroy()
 @Component({
@@ -21,7 +22,7 @@ import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 export class HeroesComponent implements OnInit {
   itemForm: FormGroup;
   editedForm: FormGroup;
-  heroes: any;
+  heroes: Hero[];
   isLoading = false;
   editingTracker = "0";
 
