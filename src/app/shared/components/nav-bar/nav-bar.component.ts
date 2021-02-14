@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngxs/store";
 import { GetHeroesAction } from "src/app/ngxs/actions/hero.action";
-import { GetVillainsAction } from "src/app/ngxs/actions/villain.action";
 import { HeroState } from "src/app/ngxs/states/hero.state";
+import { GetVillainsAction } from "src/app/ngxs/actions/villain.action";
 import { VillainState } from "src/app/ngxs/states/villain.state";
 import { UntilDestroy, untilDestroyed } from "@ngneat/until-destroy";
 
