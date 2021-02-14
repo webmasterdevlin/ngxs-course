@@ -47,11 +47,7 @@ export class VillainState {
   }
 
   @Action(GetVillainsAction)
-  getVillains({
-    getState,
-    setState,
-    patchState,
-  }: StateContext<VillainStateModel>) {
+  getVillains({ patchState }: StateContext<VillainStateModel>) {
     patchState({ isLoading: true });
     return this.villainService.getVillains().pipe(
       tap((response) => {
@@ -73,7 +69,7 @@ export class VillainState {
 
   @Action(DeleteVillainAction)
   deleteVillain(
-    { getState, setState, patchState }: StateContext<VillainStateModel>,
+    { getState, patchState }: StateContext<VillainStateModel>,
     { id }: DeleteVillainAction
   ) {
     // Optimistic update
@@ -120,7 +116,7 @@ export class VillainState {
 
   @Action(UpdateVillainAction)
   updateVillain(
-    { getState, setState, patchState }: StateContext<VillainStateModel>,
+    { getState, patchState }: StateContext<VillainStateModel>,
     { payload }: UpdateVillainAction
   ) {
     // Optimistic update
@@ -143,7 +139,7 @@ export class VillainState {
 
   @Action(SoftDeleteVillainAction)
   softDeleteHero(
-    { getState, setState, patchState }: StateContext<VillainStateModel>,
+    { getState, patchState }: StateContext<VillainStateModel>,
     { id }: SoftDeleteVillainAction
   ) {
     patchState({

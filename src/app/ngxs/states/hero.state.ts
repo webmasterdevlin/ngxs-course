@@ -47,7 +47,7 @@ export class HeroState {
   }
 
   @Action(GetHeroesAction)
-  getHeroes({ getState, setState, patchState }: StateContext<HeroStateModel>) {
+  getHeroes({ patchState }: StateContext<HeroStateModel>) {
     patchState({ isLoading: true });
     return this.heroService.getHeroes().pipe(
       tap((response) => {
@@ -69,7 +69,7 @@ export class HeroState {
 
   @Action(DeleteHeroAction)
   deleteHero(
-    { getState, setState, patchState }: StateContext<HeroStateModel>,
+    { getState, patchState }: StateContext<HeroStateModel>,
     { id }: DeleteHeroAction
   ) {
     // Optimistic update
@@ -116,7 +116,7 @@ export class HeroState {
 
   @Action(UpdateHeroAction)
   updateHero(
-    { getState, setState, patchState }: StateContext<HeroStateModel>,
+    { getState, patchState }: StateContext<HeroStateModel>,
     { payload }: UpdateHeroAction
   ) {
     // Optimistic update
@@ -139,7 +139,7 @@ export class HeroState {
 
   @Action(SoftDeleteHeroAction)
   softDeleteHero(
-    { getState, setState, patchState }: StateContext<HeroStateModel>,
+    { getState, patchState }: StateContext<HeroStateModel>,
     { id }: DeleteHeroAction
   ) {
     patchState({
