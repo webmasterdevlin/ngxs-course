@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
-import { HttpErrorResponse } from "@angular/common/http";
-import { catchError, tap } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { tap, catchError, finalize } from "rxjs/operators";
+import { of } from "rxjs";
 import { HeroService } from "../services/hero.service";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { Hero } from "../../features/hero/hero.model";
@@ -16,7 +15,6 @@ import {
 export class HeroStateModel {
   heroes: Hero[];
   isLoading: boolean;
-  error: string;
 }
 
 @Injectable()
@@ -25,7 +23,6 @@ export class HeroStateModel {
   defaults: {
     heroes: [],
     isLoading: false,
-    error: "",
   },
 })
 export class HeroState {
@@ -41,29 +38,13 @@ export class HeroState {
     return state.isLoading;
   }
 
-  @Selector()
-  static getError(state: HeroStateModel) {
-    return state.error;
-  }
-
   @Action(GetHeroesAction)
   getHeroes({ patchState }: StateContext<HeroStateModel>) {
     patchState({ isLoading: true });
     return this.heroService.getHeroes().pipe(
-      tap((response) => {
-        patchState({
-          heroes: response,
-          isLoading: false,
-        });
-      }),
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
-        patchState({
-          isLoading: false,
-          error: err.statusText,
-        });
-        return throwError(err.message);
-      })
+      tap((response) => patchState({ heroes: response })),
+      catchError((error) => of([])),
+      finalize(() => patchState({ isLoading: false }))
     );
   }
 
@@ -79,13 +60,11 @@ export class HeroState {
       heroes: filteredArray,
     });
     return this.heroService.deleteHero(id).pipe(
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
+      catchError((error) => {
         patchState({
           heroes: previousState.heroes,
-          error: err.statusText,
         });
-        return throwError(err.message);
+        return of([]);
       })
     );
   }
@@ -97,20 +76,11 @@ export class HeroState {
   ) {
     patchState({ isLoading: true });
     return this.heroService.postHero(payload).pipe(
-      tap((response) => {
-        patchState({
-          heroes: [...getState().heroes, response],
-          isLoading: false,
-        });
-      }),
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
-        patchState({
-          isLoading: false,
-          error: err.statusText,
-        });
-        return throwError(err.message);
-      })
+      tap((response) =>
+        patchState({ heroes: [...getState().heroes, response] })
+      ),
+      catchError((error) => of([])),
+      finalize(() => patchState({ isLoading: false }))
     );
   }
 
@@ -126,13 +96,11 @@ export class HeroState {
     heroes[index] = payload;
     patchState({ heroes });
     return this.heroService.putHero(payload).pipe(
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
+      catchError((error) => {
         patchState({
           heroes: previousState.heroes,
-          error: err.statusText,
         });
-        return throwError(err.message);
+        return of([]);
       })
     );
   }

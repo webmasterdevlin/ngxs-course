@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
-import { HttpErrorResponse } from "@angular/common/http";
-import { catchError, tap } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { tap, catchError, finalize } from "rxjs/operators";
+import { of } from "rxjs";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { Villain } from "../../features/villain/villain.model";
 import { VillainService } from "../services/villain.service";
@@ -16,7 +15,6 @@ import {
 export class VillainStateModel {
   villains: Villain[];
   isLoading: boolean;
-  error: string;
 }
 
 @Injectable()
@@ -25,7 +23,6 @@ export class VillainStateModel {
   defaults: {
     villains: [],
     isLoading: false,
-    error: "",
   },
 })
 export class VillainState {
@@ -41,29 +38,13 @@ export class VillainState {
     return state.isLoading;
   }
 
-  @Selector()
-  static getError(state: VillainStateModel) {
-    return state.error;
-  }
-
   @Action(GetVillainsAction)
   getVillains({ patchState }: StateContext<VillainStateModel>) {
     patchState({ isLoading: true });
     return this.villainService.getVillains().pipe(
-      tap((response) => {
-        patchState({
-          villains: response,
-          isLoading: false,
-        });
-      }),
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
-        patchState({
-          isLoading: false,
-          error: err.statusText,
-        });
-        return throwError(err.message);
-      })
+      tap((response) => patchState({ villains: response })),
+      catchError((error) => of([])),
+      finalize(() => patchState({ isLoading: false }))
     );
   }
 
@@ -79,13 +60,11 @@ export class VillainState {
       villains: filteredArray,
     });
     return this.villainService.deleteVillain(id).pipe(
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
+      catchError((error) => {
         patchState({
           villains: previousState.villains,
-          error: err.statusText,
         });
-        return throwError(err.message);
+        return of([]);
       })
     );
   }
@@ -97,20 +76,13 @@ export class VillainState {
   ) {
     patchState({ isLoading: true });
     return this.villainService.postVillain(payload).pipe(
-      tap((response) => {
+      tap((response) =>
         patchState({
           villains: [...getState().villains, response],
-          isLoading: false,
-        });
-      }),
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
-        patchState({
-          isLoading: false,
-          error: err.statusText,
-        });
-        return throwError(err.message);
-      })
+        })
+      ),
+      catchError((error) => of([])),
+      finalize(() => patchState({ isLoading: false }))
     );
   }
 
@@ -126,13 +98,11 @@ export class VillainState {
     villains[index] = payload;
     patchState({ villains });
     return this.villainService.putVillain(payload).pipe(
-      catchError((err: HttpErrorResponse) => {
-        alert("Something happened. Please try again.");
+      catchError((error) => {
         patchState({
           villains: previousState.villains,
-          error: err.statusText,
         });
-        return throwError(err.message);
+        return of([]);
       })
     );
   }
