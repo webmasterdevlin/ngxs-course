@@ -69,6 +69,7 @@ export class HeroState {
     );
   }
 
+  // Pessimistic update
   @Action(AddHeroAction)
   addHero(
     { getState, patchState }: StateContext<HeroStateModel>,

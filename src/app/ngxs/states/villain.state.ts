@@ -69,6 +69,7 @@ export class VillainState {
     );
   }
 
+  // Pessimistic update
   @Action(AddVillainAction)
   addVillain(
     { getState, patchState }: StateContext<VillainStateModel>,
