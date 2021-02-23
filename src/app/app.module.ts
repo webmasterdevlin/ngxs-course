@@ -7,11 +7,11 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NavBarComponent } from "./shared/components/nav-bar/nav-bar.component";
 import { SharedModule } from "./shared/shared.module";
 import { CoreModule } from "./core/core.module";
+import { AppStoreModule } from "./ngxs/app-store.module";
 import { NgxsLoggerPluginModule } from "@ngxs/logger-plugin";
 import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
 import { NgxsModule } from "@ngxs/store";
 import { HeroState } from "./ngxs/states/hero.state";
-import { AppStoreModule } from "./ngxs/app-store.module";
 import { environment } from "../environments/environment";
 import { VillainState } from "./ngxs/states/villain.state";
 
