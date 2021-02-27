@@ -1,4 +1,4 @@
-import { Villain } from "../../features/villain/villain.model";
+import { Villain } from "src/app/features/villain/villain.model";
 
 export class GetVillainsAction {
   static readonly type = "[Villain] Get";

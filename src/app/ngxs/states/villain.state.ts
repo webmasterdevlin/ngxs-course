@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Villain } from "../../features/villain/villain.model";
+import { Villain } from "src/app/features/villain/villain.model";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import {
   AddVillainAction,
